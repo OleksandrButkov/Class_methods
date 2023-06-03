@@ -37,17 +37,15 @@ class Phone(Field):
 
 
 #екземпляри класів присвоєні змінним для перевірки та відладки
-address_book = AddressBook()
-
-record1 = Record("John")
-phone1 = Phone("123456789")
-record1.add_phone(phone1)
-
-record2 = Record("Alice")
-phone2 = Phone("987654321")
-record2.add_phone(phone2)
-
-address_book.add_record(record1)
-address_book.add_record(record2)
-
-print(address_book.data.items())
+if __name__ == '__main__':
+    name = Name('Bill')
+    phone = Phone('1234567890')
+    rec = Record(name, phone)
+    ab = AddressBook()
+    ab.add_record(rec)
+    assert isinstance(ab['Bill'], Record)
+    assert isinstance(ab['Bill'].name, Name)
+    assert isinstance(ab['Bill'].phones, list)
+    assert isinstance(ab['Bill'].phones[0], Phone)
+    assert ab['Bill'].phones[0].value == '1234567890'
+    print('All Ok)')
