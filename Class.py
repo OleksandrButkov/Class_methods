@@ -8,9 +8,9 @@ class AddressBook(UserDict):
 
 
 class Record:                                   # Клас, який відповідає за логіку додавання та обробки полів
-    def __init__(self, name):
-        self.name = Name(name)                  # Обов'язкове поле name
-        self.phones = []
+    def __init__(self, name, phone):
+        self.name = name                  # Обов'язкове поле name
+        self.phones = [phone]
 
     def add_phone(self, phone):
         self.phones.append(phone)
