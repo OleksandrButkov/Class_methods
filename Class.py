@@ -80,9 +80,6 @@ class Birthday(Field):
         self._value = value
 
 
-
-
-
 if __name__ == '__main__':
     name = Name('Bill')
     phone = Phone('1234567890')
