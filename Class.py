@@ -1,5 +1,5 @@
 from collections import UserDict
-from datetime import datetime, timedelta
+from datetime import datetime
 
 
 class AddressBook(UserDict):
@@ -36,7 +36,15 @@ class Record:
 
 class Field:
     def __init__(self, value):
-        self.value = value
+        self._value = value
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, new_value):
+        self._value = new_value
 
 
 class Name(Field):
@@ -44,24 +52,47 @@ class Name(Field):
 
 
 class Phone(Field):
-    def correct_value(self):
-        pass
+
+    @property
+    def correct_phone(self):
+        return self._value
+
+    @correct_phone.setter
+    def correct_phone(self, value):
+        if not isinstance(value, str):
+            raise ValueError("Phone number must be a string")
+        # Перевірка, чи містить номер телефону тільки цифри та має довжину 10
+        if not value.isdigit() or len(value) != 10:
+            raise ValueError("Invalid phone number")
+        self._value = value
 
 
 class Birthday(Field):
-    def correct_value(self):
-        pass
 
-# екземпляри класів присвоєні змінним для перевірки та відладки
-# if __name__ == '__main__':
-#     name = Name('Bill')
-#     phone = Phone('1234567890')
-#     rec = Record(name, phone)
-#     ab = AddressBook()
-#     ab.add_record(rec)
-#     assert isinstance(ab['Bill'], Record)
-#     assert isinstance(ab['Bill'].name, Name)
-#     assert isinstance(ab['Bill'].phones, list)
-#     assert isinstance(ab['Bill'].phones[0], Phone)
-#     assert ab['Bill'].phones[0].value == '1234567890'
-#     print('All Ok)')
+    @property
+    def correct_birthday(self):
+        return self._value
+
+    @correct_birthday.setter
+    def correct_birthday(self, value):
+        if not isinstance(value, datetime):
+            raise ValueError("Birthday must be a datetime object")
+        self._value = value
+
+
+
+
+
+if __name__ == '__main__':
+    name = Name('Bill')
+    phone = Phone('1234567890')
+    birthday = Birthday(datetime(1990, 5, 17))
+    ab = AddressBook()
+    rec = Record(name, phone, birthday)
+    ab.add_record(rec)
+    assert isinstance(ab['Bill'], Record)
+    assert isinstance(ab['Bill'].name, Name)
+    assert isinstance(ab['Bill'].phones, list)
+    assert isinstance(ab['Bill'].phones[0], Phone)
+    assert ab['Bill'].phones[0].value == '1234567890'
+    print('all ok')
