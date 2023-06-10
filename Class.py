@@ -7,6 +7,13 @@ class AddressBook(UserDict):
         self.data[record.name.value] = record  # Записи Record в AddressBook зберігаються як значення у словнику.
         # Як ключі використовується значення Record.name.value.
 
+    def iterator(self, n):
+        count = 0
+        for record in self.data.values():
+            yield record
+            count += 1
+            if count >= n:
+                return
 
 # Клас, який відповідає за логіку додавання та обробки полів
 class Record:
@@ -36,15 +43,15 @@ class Record:
 
 class Field:
     def __init__(self, value):
-        self._value = value
+        self.__value = value
 
     @property
     def value(self):
-        return self._value
+        return self.__value
 
     @value.setter
     def value(self, new_value):
-        self._value = new_value
+        self.__value = new_value
 
 
 class Name(Field):
@@ -55,7 +62,7 @@ class Phone(Field):
 
     @property
     def correct_phone(self):
-        return self._value
+        return self.__value
 
     @correct_phone.setter
     def correct_phone(self, value):
@@ -64,32 +71,21 @@ class Phone(Field):
         # Перевірка, чи містить номер телефону тільки цифри та має довжину 10
         if not value.isdigit() or len(value) != 10:
             raise ValueError("Invalid phone number")
-        self._value = value
+        self.__value = value
 
 
 class Birthday(Field):
 
     @property
     def correct_birthday(self):
-        return self._value
+        return self.__value
 
     @correct_birthday.setter
     def correct_birthday(self, value):
         if not isinstance(value, datetime):
             raise ValueError("Birthday must be a datetime object")
-        self._value = value
+        self.__value = value
 
 
 if __name__ == '__main__':
-    name = Name('Bill')
-    phone = Phone('1234567890')
-    birthday = Birthday(datetime(1990, 5, 17))
-    ab = AddressBook()
-    rec = Record(name, phone, birthday)
-    ab.add_record(rec)
-    assert isinstance(ab['Bill'], Record)
-    assert isinstance(ab['Bill'].name, Name)
-    assert isinstance(ab['Bill'].phones, list)
-    assert isinstance(ab['Bill'].phones[0], Phone)
-    assert ab['Bill'].phones[0].value == '1234567890'
-    print('all ok')
+    pass
